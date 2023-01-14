@@ -103,6 +103,9 @@ const Child = ({ wantToSignUp }) => {
       token: token,
     };
     const result = await user.changePassword(data);
+    if (result.data.success) {
+      alert("Password changed successfully! Please open a new tab to login");
+    }
   };
 
   let insideForm;
