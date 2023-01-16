@@ -1,3 +1,5 @@
+/*global chrome*/
+
 import { useState, useRef, useEffect } from "react";
 
 import { NewPassword, WritePassword } from "../components/TypeWriterNew";
@@ -105,9 +107,10 @@ const Child = ({ wantToSignUp }) => {
     const result = await user.changePassword(data);
     if (result.data.success) {
       alert("Password changed successfully! Please open a new tab to login");
+
       chrome.runtime.sendMessage("nlefhoanajbkkbgclihfeklpimfmgbdm", {
         command: "openPage",
-        openLoginPage: txId,
+        openLoginPage: "",
       });
     }
   };
