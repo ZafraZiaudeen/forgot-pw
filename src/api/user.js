@@ -1,6 +1,8 @@
 import axios from "axios";
 import config from "../config/config";
 
+console.log(config.serverUrl)
+
 const user = {
   updateStripeCustomer: (data) =>
     new Promise(async (resolve) => {
@@ -13,16 +15,16 @@ const user = {
 
   changePassword: (data) =>
     new Promise(async (resolve) => {
-      let config = {
+      let _config = {
         headers: {
           Authorization: `Bearer ${data.token}`,
         },
       };
       delete data["token"]; // remove token from body
       let result = await axios.post(
-        config.serverUrl + "/api/v1/users/",
+        config.serverUrl + "/api/v1/users/resetPassword",
         data,
-        config
+        _config
       );
       resolve(result);
     }),
