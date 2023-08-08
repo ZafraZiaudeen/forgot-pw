@@ -39,10 +39,7 @@ export default function CheckoutScreen({ clientData, setCheckoutPage }) {
       <section className={styles.signUpActions}>
         <div className={styles.iconSection}></div>
         <h1 className={`${styles.greeting} ${styles.shadow}`}>
-          Hi{" "}
-          {clientData.name &&
-            (clientData.name ? clientData.name : "it feels good to")}
-          !
+          Hi{" "}Amazing!
         </h1>
         <div className={`${styles.payForwardContainer} ${styles.shadow}`}>
           <span id="txt-type">Pay Forward</span>

@@ -10,6 +10,10 @@
   font-family: "Quicksand Regular";
   src: url("../fonts/Quicksand-Regular.ttf");
 }
+@font-face {
+  font-family: "Canela Light";
+  src: url("../fonts/Canela-Light.ttf");
+}
 .container {
   position: absolute;
   width: 100%;
@@ -84,7 +88,7 @@
 }
 
 .signUpActions .formAction label {
-  font-family: "Playfair Display", serif;
+  font-family: "Canela Light";
   letter-spacing: 3px;
   line-height: 80px;
   font-size: 80px;
