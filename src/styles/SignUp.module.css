@@ -6,6 +6,10 @@
   font-family: "VarelaRound";
   src: url("../fonts/VarelaRound-Regular.ttf");
 }
+@font-face {
+  font-family: "Quicksand Regular";
+  src: url("../fonts/Quicksand-Regular.ttf");
+}
 .container {
   position: absolute;
   width: 100%;
@@ -17,7 +21,7 @@
 }
 
 .greeting {
-  font-family: "Playfair Display", serif;
+  font-family: "Quicksand Regular";
   letter-spacing: 0;
   font-weight: 200;
   margin-top: 24.5px;
@@ -598,7 +602,7 @@
   font-family: "Quicksand Bold";
   font-size: 11px;
   letter-spacing: normal;
-  color: #ff9300 !important
+  color: #ff9300 !important;
 }
 
 .monthlyPrices,
