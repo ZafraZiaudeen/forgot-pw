@@ -129,7 +129,7 @@ const Child = ({ wantToSignUp }) => {
     if (result.data.success) {
       setErrorMsg({
         message:
-          "Password changed successfully! Please open a new tab to login",
+          "Yeeeees! you just change your password! 😃",
       });
       setTimeout(() => {
         chrome.runtime.sendMessage("nlefhoanajbkkbgclihfeklpimfmgbdm", {
