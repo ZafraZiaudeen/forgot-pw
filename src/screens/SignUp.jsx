@@ -1,6 +1,7 @@
 /*global chrome*/
 
 import { useState, useRef, useEffect } from "react";
+import Alert from "../components/Alert";
 
 import { NewPassword, WritePassword } from "../components/TypeWriterNew";
 import styles from "../styles/SignUp.module.css";
@@ -11,8 +12,8 @@ import arrowBtnSignUp from "../images/arrowBtnLoginTransparent.svg";
 import arrowForward from "../images/arrowOnly.svg";
 import lock from "../images/2886699.svg";
 import badge from "../images/badgeMark.svg";
-import eyeOpen from "../images/eyeOpen.svg"
-import eyeClosed from '../images/eyeClosed.svg'
+import eyeOpen from "../images/eyeOpen.svg";
+import eyeClosed from "../images/eyeClosed.svg";
 
 import extension from "../api/extension";
 import user from "../api/user";
@@ -53,6 +54,7 @@ const Child = ({ wantToSignUp }) => {
   const [emptyPassword, setEmptyPassword] = useState(false);
   const [userEmail, setUserEmail] = useState(null);
   const [token, setToken] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
 
   const [steps, setSteps] = useState({
     stepOne: false,
@@ -74,6 +76,19 @@ const Child = ({ wantToSignUp }) => {
   }, []);
 
   const handleNameNext = () => {
+    if (password.trim() === "")
+      return setErrorMsg({
+        message: "Password cannot be empty!",
+        negative: true,
+      });
+    const regex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,}$/;
+    if (!regex.test(password))
+      return setErrorMsg({
+        message:
+          "Password must contain at least 8 characters, 1 letter and 1 number",
+        negative: true,
+      });
+
     setStep("2");
   };
 
@@ -98,7 +113,11 @@ const Child = ({ wantToSignUp }) => {
 
   const handleSubmit = async () => {
     if (password.trim() === "" || confirmPassword.trim() === "")
-      return alert("Passwords cannot be empty!");
+      return setErrorMsg({
+        message: "Passwords cannot be empty!",
+        negative: true,
+      });
+
     if (password !== confirmPassword) return alert("Passwords doesn't match");
     const data = {
       email: userEmail,
@@ -108,12 +127,16 @@ const Child = ({ wantToSignUp }) => {
     };
     const result = await user.changePassword(data);
     if (result.data.success) {
-      alert("Password changed successfully! Please open a new tab to login");
-
-      chrome.runtime.sendMessage("nlefhoanajbkkbgclihfeklpimfmgbdm", {
-        command: "openPage",
-        openLoginPage: "",
+      setErrorMsg({
+        message:
+          "Password changed successfully! Please open a new tab to login",
       });
+      setTimeout(() => {
+        chrome.runtime.sendMessage("nlefhoanajbkkbgclihfeklpimfmgbdm", {
+          command: "openPage",
+          openLoginPage: "",
+        });
+      }, 10000);
     }
   };
 
@@ -121,6 +144,7 @@ const Child = ({ wantToSignUp }) => {
   if (step === "1") {
     insideForm = (
       <div className={styles.formAction}>
+        <Alert errorMessage={errorMsg} setErrorMessage={setErrorMsg} />
         <label htmlFor="name" className={styles.how}>
           <span
             style={{
@@ -295,6 +319,7 @@ const Child = ({ wantToSignUp }) => {
 
   return (
     <div className={styles.container}>
+      <Alert errorMessage={errorMsg} setErrorMessage={setErrorMsg} />
       <section className={styles.signUpActions}>
         <div className={styles.iconSection}>
           <img
