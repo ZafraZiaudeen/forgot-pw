@@ -245,6 +245,9 @@
   gap: 20px;
   display: flex;
   align-items: center;
+  font-size: 12px;
+  letter-spacing: 3px;
+  font-weight: 600;
 }
 
 .footerLinks button {
