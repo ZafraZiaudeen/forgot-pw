@@ -1,6 +1,9 @@
 /*global chrome*/
 
 import { useState, useRef, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { updateErrorMessage } from "../actions/common";
+
 import Alert from "../components/Alert";
 
 import { NewPassword, WritePassword } from "../components/TypeWriterNew";
@@ -55,6 +58,7 @@ const Child = ({ wantToSignUp }) => {
   const [userEmail, setUserEmail] = useState(null);
   const [token, setToken] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
+  const dispatch = useDispatch();
 
   const [steps, setSteps] = useState({
     stepOne: false,
@@ -77,17 +81,21 @@ const Child = ({ wantToSignUp }) => {
 
   const handleNameNext = () => {
     if (password.trim() === "")
-      return setErrorMsg({
-        message: "Password cannot be empty!",
+      return dispatch(updateErrorMessage({
+        message: "Uh-oh! 🙈 It seems you forgot to add the magic word. A password, please add one! 🔒😅",
         negative: true,
-      });
+        animated: true,
+      }));
     const regex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,}$/;
     if (!regex.test(password))
-      return setErrorMsg({
-        message:
-          "Password must contain at least 8 characters, 1 letter and 1 number",
-        negative: true,
-      });
+      return dispatch(
+        updateErrorMessage({
+          message:
+            "Mix 8 characters, sprinkle uppercase and lowercase letters generously, and numbers",
+          negative: true,
+          animated: true,
+        })
+      );
 
     setStep("2");
   };
@@ -128,8 +136,7 @@ const Child = ({ wantToSignUp }) => {
     const result = await user.changePassword(data);
     if (result.data.success) {
       setErrorMsg({
-        message:
-          "Yeeeees! you just change your password! 😃",
+        message: "Yeeeees! you just change your password! 😃",
       });
       setTimeout(() => {
         chrome.runtime.sendMessage("nlefhoanajbkkbgclihfeklpimfmgbdm", {

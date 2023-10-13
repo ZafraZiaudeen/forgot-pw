@@ -4,24 +4,31 @@ import styles from "../styles/alert.module.scss";
 import { ReactComponent as FailedIcon } from "../images/black_x.svg";
 import { ReactComponent as ErrorBell } from "../images/errorBell.svg";
 import { ReactComponent as SuccessBell } from "../images/successNotificationIcon.svg";
+import gifBellIcon from "../images/gifBell.gif";
 
-export default function Alert({ timer, errorMessage, setErrorMessage }) {
+import { useSelector, useDispatch } from "react-redux";
+import { updateErrorMessage } from "../actions/common";
+
+export default function Alert({ timer }) {
   const alertRef = useRef();
+  const dispatch = useDispatch();
 
+  const errorMessage = useSelector((state) => state.common)?.errorMessage;
   const negative = errorMessage?.negative;
   const message = errorMessage?.message;
+  const gifBell = errorMessage?.animated;
 
   const setMessage = useCallback(
     (msg) => {
-      setErrorMessage({ message: msg });
+      dispatch(updateErrorMessage({ message: msg }));
     },
-    [setErrorMessage]
+    [dispatch]
   );
   const setNegative = useCallback(
     (bool) => {
-      setErrorMessage({ negative: bool });
+      dispatch(updateErrorMessage({ negative: bool }));
     },
-    [setErrorMessage]
+    [dispatch]
   );
 
   const handleClose = () => {
@@ -34,21 +41,26 @@ export default function Alert({ timer, errorMessage, setErrorMessage }) {
 
   useEffect(() => {
     if (!message) return;
+    let firstTimer;
+    let secondTimer;
 
     const runTimer = () => {
-      setTimeout(() => {
+      firstTimer = setTimeout(() => {
         if (alertRef.current) {
           alertRef.current.classList.add(styles.slideOut);
-          setMessage(null);
-          setNegative(false);
         }
-      }, timer || 10000);
+      }, timer || 10 * 1000);
+      secondTimer = setTimeout(() => {
+        setMessage(null);
+        setNegative(false);
+      }, timer + 1000 || 11 * 1000);
     };
 
     runTimer();
 
     return () => {
-      clearTimeout(runTimer);
+      clearTimeout(firstTimer);
+      clearTimeout(secondTimer);
       runTimer();
     };
   }, [message, setMessage, timer]);
@@ -61,7 +73,10 @@ export default function Alert({ timer, errorMessage, setErrorMessage }) {
           ref={alertRef}
         >
           {!negative && <SuccessBell />}
-          {negative && <ErrorBell />}
+          {negative && !gifBell && <ErrorBell />}
+          {negative && gifBell && (
+            <img src={gifBellIcon} alt="" className={styles.gifBell} />
+          )}
 
           <span className={styles.messageText}>
             {message ||

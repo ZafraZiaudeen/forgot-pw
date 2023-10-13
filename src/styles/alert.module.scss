@@ -27,7 +27,7 @@
     position: absolute;
     right: 13px;
 
-    .alertIcon{
+    .alertIcon {
       width: 40px;
       height: 40px;
     }
@@ -43,6 +43,10 @@
   }
 }
 
+.gifBell {
+  width: 40px;
+  height: 40px;
+}
 .active {
   top: 10px;
   animation: slide-in-top 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) alternate
