@@ -9,7 +9,7 @@ import Alert from "../components/Alert";
 import { NewPassword, WritePassword } from "../components/TypeWriterNew";
 import styles from "../styles/SignUp.module.css";
 import anims from "../styles/animations.module.css";
-import smile from "../images/520464@2x.png";
+import smile from "../images/smile.png";
 import padlock from "../images/padlock.svg";
 import arrowBtnSignUp from "../images/arrowBtnLoginTransparent.svg";
 import arrowForward from "../images/arrowOnly.svg";
