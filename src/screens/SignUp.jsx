@@ -10,7 +10,7 @@ import { NewPassword, WritePassword } from "../components/TypeWriterNew";
 import styles from "../styles/SignUp.module.css";
 import anims from "../styles/animations.module.css";
 import smile from "../images/smile.png";
-import padlock from "../images/padlock.svg";
+import padlock from "../images/locked.png";
 import arrowBtnSignUp from "../images/arrowBtnLoginTransparent.svg";
 import arrowForward from "../images/arrowOnly.svg";
 import lock from "../images/2886699.svg";
