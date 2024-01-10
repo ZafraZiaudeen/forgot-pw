@@ -58,6 +58,7 @@ const Child = ({ wantToSignUp }) => {
   const [userEmail, setUserEmail] = useState(null);
   const [token, setToken] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [submitted, setSubmitted] = useState(false);
   const dispatch = useDispatch();
 
   const [steps, setSteps] = useState({
@@ -81,11 +82,14 @@ const Child = ({ wantToSignUp }) => {
 
   const handleNameNext = () => {
     if (password.trim() === "")
-      return dispatch(updateErrorMessage({
-        message: "Uh-oh! 🙈 It seems you forgot to add the magic word. A password, please add one! 🔒😅",
-        negative: true,
-        animated: true,
-      }));
+      return dispatch(
+        updateErrorMessage({
+          message:
+            "Uh-oh! 🙈 It seems you forgot to add the magic word. A password, please add one! 🔒😅",
+          negative: true,
+          animated: true,
+        })
+      );
     const regex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,}$/;
     if (!regex.test(password))
       return dispatch(
@@ -120,30 +124,41 @@ const Child = ({ wantToSignUp }) => {
   };
 
   const handleSubmit = async () => {
-    if (password.trim() === "" || confirmPassword.trim() === "")
-      return setErrorMsg({
-        message: "Passwords cannot be empty!",
-        negative: true,
-      });
-
-    if (password !== confirmPassword) return alert("Passwords doesn't match");
-    const data = {
-      email: userEmail,
-      password: password,
-      confirmPassword: confirmPassword,
-      token: token,
-    };
-    const result = await user.changePassword(data);
-    if (result.data.success) {
-      setErrorMsg({
-        message: "Yeeeees! you just change your password! 😃",
-      });
-      setTimeout(() => {
-        chrome.runtime.sendMessage("nlefhoanajbkkbgclihfeklpimfmgbdm", {
-          command: "openPage",
-          openLoginPage: "",
+    try {
+      if (password.trim() === "" || confirmPassword.trim() === "")
+        return setErrorMsg({
+          message: "Passwords cannot be empty!",
+          negative: true,
         });
-      }, 10000);
+
+      if (password !== confirmPassword) return alert("Passwords doesn't match");
+      const data = {
+        email: userEmail,
+        password: password,
+        confirmPassword: confirmPassword,
+        token: token,
+      };
+      setSubmitted(true);
+      const result = await user.changePassword(data);
+
+      if (result.data?.success) {
+        dispatch(
+          updateErrorMessage({
+            negative: false,
+            message: "Yeeeees! you just change your password! 😃",
+          })
+        );
+        setTimeout(() => {
+          chrome.runtime.sendMessage("nlefhoanajbkkbgclihfeklpimfmgbdm", {
+            command: "openPage",
+            openLoginPage: "",
+          });
+        }, 10000);
+      } else {
+        setSubmitted(false);
+      }
+    } catch (err) {
+      setSubmitted(false);
     }
   };
 
@@ -222,6 +237,7 @@ const Child = ({ wantToSignUp }) => {
               type="button"
               onClick={() => handleNameNext()}
               className={styles.forwardBtn}
+              disabled={password === ""}
             >
               <img
                 src={arrowForward}
@@ -285,6 +301,7 @@ const Child = ({ wantToSignUp }) => {
                   handleSubmit();
                 }
               }}
+              disabled={submitted}
             />
             <span className={styles.showPass} onClick={handleClick}>
               {passwordVisible ? (
@@ -300,7 +317,7 @@ const Child = ({ wantToSignUp }) => {
               handleSubmit();
             }}
             className={styles.forwardBtn}
-            disabled={password === ""}
+            disabled={password === "" || confirmPassword === "" || submitted}
           >
             <img
               src={arrowForward}

@@ -419,6 +419,11 @@
   background-color: #34e1eb;
 }
 
+.forwardBtn:disabled {
+  background-color: #b7b7b75c !important;
+  cursor: not-allowed;
+}
+
 .welcome .forwardBtn img {
   margin-left: -23px;
   margin-bottom: -2px;
