@@ -4,6 +4,7 @@ import "./App.css";
 import SignUp from "./screens/SignUp";
 import CheckoutScreen from "./screens/CheckoutScreen";
 import config from "./config/config";
+import CanvasBackground from "./components/CanvasBackground";
 
 import { Helmet } from "react-helmet";
 import ReactGA from "react-ga";
@@ -194,32 +195,35 @@ function App() {
   const goToForgotPassword = (goOrNot) => setForgotPassword(goOrNot);
 
   return (
-    <div
-      className="App"
-      style={{ backgroundImage: `url(${bgImage})` }}
-      ref={appContainerRef}
-    >
-      <div className="overlay" ref={overlayRef}>
-        {!checkoutPage && (
-          <SignUp
-            setLoggedIn={determineLoggedIn}
-            wantToSignUp={wantToSignUp}
-            isSubscribed={subscriptionState}
-            setCheckoutPage={setCheckoutPage}
-            clientData={clientData}
-            setClientData={setClientData}
-            setUserCreated={setUserCreated}
-            userCreated={userCreated}
-          />
-        )}
-        {checkoutPage && (
-          <CheckoutScreen
-            clientData={clientData}
-            setCheckoutPage={setCheckoutPage}
-          />
-        )}
+    <>
+      <CanvasBackground />
+      <div
+        className="App"
+        style={{ backgroundImage: `url(${bgImage})` }}
+        ref={appContainerRef}
+      >
+        <div className="overlay" ref={overlayRef}>
+          {!checkoutPage && (
+            <SignUp
+              setLoggedIn={determineLoggedIn}
+              wantToSignUp={wantToSignUp}
+              isSubscribed={subscriptionState}
+              setCheckoutPage={setCheckoutPage}
+              clientData={clientData}
+              setClientData={setClientData}
+              setUserCreated={setUserCreated}
+              userCreated={userCreated}
+            />
+          )}
+          {checkoutPage && (
+            <CheckoutScreen
+              clientData={clientData}
+              setCheckoutPage={setCheckoutPage}
+            />
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
