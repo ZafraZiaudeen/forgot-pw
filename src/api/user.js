@@ -21,8 +21,10 @@ const user = {
         },
       };
       delete data["token"]; // remove token from body
+      console.log(data);
+
       let result = await axios.post(
-        config.serverUrl + "/api/v1/users/resetPassword",
+        config.serverUrl + "auth/reset-password/" + data?.email,
         data,
         _config
       );
