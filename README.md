@@ -1,4 +1,3 @@
 # beatific-forgot-password
 
 .
-.
