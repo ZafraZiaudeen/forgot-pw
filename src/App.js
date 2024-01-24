@@ -60,7 +60,7 @@ function App() {
       setBgImage(todayImg);
     } else {
       axios
-        .get(`${config.serverUrl}images/${today}`)
+        .get(`${config.serverUrl}/api/v1/images/${today}`)
         .then((res) => {
           if (res.data.image) {
             localStorage.setItem(
@@ -87,7 +87,7 @@ function App() {
     }
 
     axios
-      .get(`${config.serverUrl}images/${today}`)
+      .get(`${config.serverUrl}/api/v1/images/${today}`)
       .then((res) => {
         if (res.data.image && res.data.image.toString() !== todayImg) {
           localStorage.setItem(`beatific-image-${todayParsed}`, res.data.image);
@@ -107,7 +107,7 @@ function App() {
 
     if (!tomorrowImg) {
       axios
-        .get(`${config.serverUrl}images/${tomorrowDate}`)
+        .get(`${config.serverUrl}/api/v1/images/${tomorrowDate}`)
         .then((res) => {
           if (res.data.image) {
             localStorage.setItem(
@@ -150,32 +150,32 @@ function App() {
     overlayRef.current.style.height = outerHeight;
   }, [outerHeight]);
 
-  // useEffect(() => {
-  //   if (user !== null) {
-  //     setLoggedIn(true);
-  //     axios
-  //       .get(
-  //         `${config.serverUrl}/api/v1/subscribed/${
-  //           user?.email
-  //         }/${new Date().getMonth()}`
-  //       )
-  //       .then((res) => {
-  //         if (res.data.message === "true") {
-  //           setSubscribed(true);
-  //         } else {
-  //           setSubscribed(false);
-  //         }
-  //       })
-  //       .catch((err) => {});
-  //   }
+  useEffect(() => {
+    if (user !== null) {
+      setLoggedIn(true);
+      axios
+        .get(
+          `${config.serverUrl}/api/v1/subscribed/${
+            user?.email
+          }/${new Date().getMonth()}`
+        )
+        .then((res) => {
+          if (res.data.message === "true") {
+            setSubscribed(true);
+          } else {
+            setSubscribed(false);
+          }
+        })
+        .catch((err) => {});
+    }
 
-  //   if (localStorage.getItem("firstTime") === null) {
-  //     setLoggedIn(false);
-  //     setForgotPassword(false);
-  //     setSignUp(true);
-  //     localStorage.setItem("firstTime", "true");
-  //   }
-  // }, [user, today]);
+    if (localStorage.getItem("firstTime") === null) {
+      setLoggedIn(false);
+      setForgotPassword(false);
+      setSignUp(true);
+      localStorage.setItem("firstTime", "true");
+    }
+  }, [user, today]);
 
   useEffect(() => {
     let timer = setInterval(() => {
