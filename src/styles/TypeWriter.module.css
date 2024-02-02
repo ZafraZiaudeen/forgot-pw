@@ -21,3 +21,10 @@
 .txtType > .txt {
   border-right: 0.05em solid white;
 }
+
+@media (max-width: 768px) {
+  .container {
+    font-size: 32px;
+    line-height: 42px;
+  }
+}

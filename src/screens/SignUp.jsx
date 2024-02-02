@@ -179,6 +179,7 @@ const Child = ({ wantToSignUp }) => {
           </span>
         </label>
         <div
+          className={styles.nameInputWrapper}
           style={{
             display: "flex",
             flexDirection: "column",
