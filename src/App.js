@@ -17,9 +17,7 @@ function App() {
   const [signUp, setSignUp] = useState(true);
   const [subscribed, setSubscribed] = useState(true);
   const [forgotPassword, setForgotPassword] = useState(false);
-  const [bgImage, setBgImage] = useState(
-    "https://i.postimg.cc/cLjZm9RS/default-01.jpg"
-  );
+  const [bgImage, setBgImage] = useState("");
   const [dailyQuestion, setDailyQuestion] = useState("");
   const [checkoutPage, setCheckoutPage] = useState(false);
   const [clientData, setClientData] = useState({});
@@ -70,19 +68,12 @@ function App() {
             setBgImage(res.data.image);
           } else if (!res.data.image && res.message === "Image not found") {
             console.log("Image not found");
-            localStorage.setItem(
-              `beatific-image-${todayParsed}`,
-              "https://i.postimg.cc/cLjZm9RS/default-01.jpg"
-            );
-            setBgImage("https://i.postimg.cc/cLjZm9RS/default-01.jpg");
+
+
           }
         })
         .catch((err) => {
-          localStorage.setItem(
-            `beatific-image-${todayParsed}`,
-            "https://i.postimg.cc/cLjZm9RS/default-01.jpg"
-          );
-          setBgImage("https://i.postimg.cc/cLjZm9RS/default-01.jpg");
+
         });
     }
 
@@ -97,11 +88,7 @@ function App() {
       })
       .catch((err) => {
         if (!todayImg) {
-          localStorage.setItem(
-            `beatific-image-${todayParsed}`,
-            "https://i.postimg.cc/cLjZm9RS/default-01.jpg"
-          );
-          setBgImage("https://i.postimg.cc/cLjZm9RS/default-01.jpg");
+
         }
       });
 
@@ -155,8 +142,7 @@ function App() {
       setLoggedIn(true);
       axios
         .get(
-          `${config.serverUrl}/api/v1/subscribed/${
-            user?.email
+          `${config.serverUrl}/api/v1/subscribed/${user?.email
           }/${new Date().getMonth()}`
         )
         .then((res) => {
@@ -166,7 +152,7 @@ function App() {
             setSubscribed(false);
           }
         })
-        .catch((err) => {});
+        .catch((err) => { });
     }
 
     if (localStorage.getItem("firstTime") === null) {
