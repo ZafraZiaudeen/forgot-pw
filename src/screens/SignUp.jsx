@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { updateErrorMessage } from "../actions/common";
+import { setLoadingState, updateErrorMessage } from "../actions/common";
 
 import Alert from "../components/Alert";
 
@@ -20,6 +20,7 @@ import eyeClosed from "../images/eyeClosed.svg";
 
 import extension from "../api/extension";
 import user from "../api/user";
+import NextButton from "../components/NextButton";
 
 const SignUp = ({
   wantToSignUp,
@@ -124,14 +125,22 @@ const Child = ({ wantToSignUp }) => {
   };
 
   const handleSubmit = async () => {
+    dispatch(setLoadingState(true));
+
     try {
-      if (password.trim() === "" || confirmPassword.trim() === "")
+      if (password.trim() === "" || confirmPassword.trim() === "") {
+        dispatch(setLoadingState(false));
         return setErrorMsg({
           message: "Passwords cannot be empty!",
           negative: true,
         });
+      }
 
-      if (password !== confirmPassword) return alert("Passwords doesn't match");
+      if (password !== confirmPassword) {
+        dispatch(setLoadingState(false))
+        return alert("Passwords doesn't match");
+      }
+
       const data = {
         email: userEmail,
         password: password,
@@ -140,6 +149,7 @@ const Child = ({ wantToSignUp }) => {
       };
       setSubmitted(true);
       const result = await user.changePassword(data);
+      dispatch(setLoadingState(false))
 
       if (result.data?.success) {
         dispatch(
@@ -156,9 +166,11 @@ const Child = ({ wantToSignUp }) => {
         }, 10000);
       } else {
         setSubmitted(false);
+        dispatch(setLoadingState(false))
       }
     } catch (err) {
       setSubmitted(false);
+      dispatch(setLoadingState(false))
     }
   };
 
@@ -312,20 +324,11 @@ const Child = ({ wantToSignUp }) => {
               )}
             </span>
           </div>
-          <button
-            type="button"
-            onClick={() => {
-              handleSubmit();
-            }}
-            className={styles.forwardBtn}
+          <NextButton
+            onClick={handleSubmit}
+            styles={styles}
             disabled={password === "" || confirmPassword === "" || submitted}
-          >
-            <img
-              src={arrowForward}
-              className={styles.arrowBtn}
-              alt="go to next form step"
-            />
-          </button>
+          />
         </div>
         <div className={styles.badgeSection}>
           <img src={badge} className={styles.badge} alt="badge" />

@@ -4,3 +4,10 @@ export const updateErrorMessage = (data) => {
     payload: data,
   };
 };
+
+export const setLoadingState = (data) => {
+  return {
+    type: "SET_LOADING",
+    payload: data
+  }
+}
