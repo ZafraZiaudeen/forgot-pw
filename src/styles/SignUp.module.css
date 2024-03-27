@@ -913,4 +913,12 @@ input[type="radio"]:hover + label .previousPrice {
     height: 26px !important;
     margin-left: 0 !important;
   }
+
+  .footerLinks{
+    font-size: 10px;
+  }
+
+  .signUpActions{
+    padding: 10px;
+  }
 }
