@@ -1,3 +1,7 @@
+import image2 from "../images/bgImages/2.jpg";
+import image3 from "../images/bgImages/3.jpg";
+import image8 from "../images/bgImages/8.jpg";
+
 export const getFromLocalStorage = arr => new Promise(resolve => {
     //turn arr into array if it's not
     if (!Array.isArray(arr)) arr = [arr];
@@ -43,3 +47,17 @@ export const getBingImage = () => {
         });
     })
 }
+
+export const getImageForToday = () => {
+    const images = [
+        image2,
+        image3,
+        image8,
+    ];
+    const today = new Date();
+    const dayOfMonth = today.getDate();
+    const imageIndex = (dayOfMonth - 1) % images.length;
+    const imageForToday = images[imageIndex];
+    return imageForToday;
+}
+

@@ -6,6 +6,7 @@ import CheckoutScreen from "./screens/CheckoutScreen";
 import config from "./config/config";
 import CanvasBackground from "./components/CanvasBackground";
 import { getBingImage } from "./functions/utils";
+import { getImageForToday } from "./functions/utils";
 
 import { Helmet } from "react-helmet";
 import ReactGA from "react-ga";
@@ -124,8 +125,13 @@ function App() {
     //       );
     //     });
     // }
-    getImage();
+    // getImage();
   }, [today, tomorrowDate, todayParsed, tomorrowDateParsed, user]);
+
+  useEffect(() => {
+    const todayImage = getImageForToday();
+    setBgImage(todayImage);
+  }, [])
 
   useEffect(() => {
     setOuterHeight(`${window.outerHeight}px`);
