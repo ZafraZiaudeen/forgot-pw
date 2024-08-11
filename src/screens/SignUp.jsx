@@ -138,7 +138,12 @@ const Child = ({ wantToSignUp }) => {
 
       if (password !== confirmPassword) {
         dispatch(setLoadingState(false));
-        return alert("Passwords doesn't match");
+        return dispatch(
+          updateErrorMessage({
+            message: "Passwords doesn't match",
+            negative: true,
+          })
+        );
       }
 
       const data = {
