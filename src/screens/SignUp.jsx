@@ -137,7 +137,7 @@ const Child = ({ wantToSignUp }) => {
       }
 
       if (password !== confirmPassword) {
-        dispatch(setLoadingState(false))
+        dispatch(setLoadingState(false));
         return alert("Passwords doesn't match");
       }
 
@@ -149,13 +149,14 @@ const Child = ({ wantToSignUp }) => {
       };
       setSubmitted(true);
       const result = await user.changePassword(data);
-      dispatch(setLoadingState(false))
+      dispatch(setLoadingState(false));
 
       if (result.data?.success) {
         dispatch(
           updateErrorMessage({
             negative: false,
             message: "Yeeeees! you just change your password! 😃",
+            timeout: 5000,
           })
         );
         setTimeout(() => {
@@ -163,14 +164,14 @@ const Child = ({ wantToSignUp }) => {
             command: "openPage",
             openLoginPage: "",
           });
-        }, 10000);
+        }, 5000);
       } else {
         setSubmitted(false);
-        dispatch(setLoadingState(false))
+        dispatch(setLoadingState(false));
       }
     } catch (err) {
       setSubmitted(false);
-      dispatch(setLoadingState(false))
+      dispatch(setLoadingState(false));
     }
   };
 

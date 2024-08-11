@@ -49,11 +49,11 @@ export default function Alert({ timer }) {
         if (alertRef.current) {
           alertRef.current.classList.add(styles.slideOut);
         }
-      }, timer || 10 * 1000);
+      }, timer || errorMessage?.timeout || 10 * 1000);
       secondTimer = setTimeout(() => {
         setMessage(null);
         setNegative(false);
-      }, timer + 1000 || 11 * 1000);
+      }, timer ? (timer + 1000) : errorMessage?.timeout + 1000 || 11 * 1000);
     };
 
     runTimer();
