@@ -5,6 +5,8 @@ import SignUp from "./screens/SignUp";
 import CheckoutScreen from "./screens/CheckoutScreen";
 import config from "./config/config";
 import CanvasBackground from "./components/CanvasBackground";
+import { getBingImage } from "./functions/utils";
+import { getImageForToday } from "./functions/utils";
 
 import { Helmet } from "react-helmet";
 import ReactGA from "react-ga";
@@ -48,75 +50,88 @@ function App() {
     monthTomorrow
   )}-${parseInt(dayTomorrow)}`;
 
+  const getImage = async () => {
+    const imagesResult = await getBingImage();
+
+    setBgImage(imagesResult);
+  };
+
+
   useEffect(() => {
-    const todayImg = localStorage.getItem(`beatific-image-${todayParsed}`);
-    const tomorrowImg = localStorage.getItem(
-      `beatific-image-${tomorrowDateParsed}`
-    );
+    // const todayImg = localStorage.getItem(`beatific-image-${todayParsed}`);
+    // const tomorrowImg = localStorage.getItem(
+    //   `beatific-image-${tomorrowDateParsed}`
+    // );
 
-    if (todayImg) {
-      setBgImage(todayImg);
-    } else {
-      axios
-        .get(`${config.serverUrl}/api/v1/images/${today}`)
-        .then((res) => {
-          if (res.data.image) {
-            localStorage.setItem(
-              `beatific-image-${todayParsed}`,
-              res.data.image
-            );
-            setBgImage(res.data.image);
-          } else if (!res.data.image && res.message === "Image not found") {
-            console.log("Image not found");
+    // if (todayImg) {
+    //   setBgImage(todayImg);
+    // } else {
+    //   axios
+    //     .get(`${config.serverUrl}/api/v1/images/${today}`)
+    //     .then((res) => {
+    //       if (res.data.image) {
+    //         localStorage.setItem(
+    //           `beatific-image-${todayParsed}`,
+    //           res.data.image
+    //         );
+    //         setBgImage(res.data.image);
+    //       } else if (!res.data.image && res.message === "Image not found") {
+    //         console.log("Image not found");
 
 
-          }
-        })
-        .catch((err) => {
+    //       }
+    //     })
+    //     .catch((err) => {
 
-        });
-    }
+    //     });
+    // }
 
-    axios
-      .get(`${config.serverUrl}/api/v1/images/${today}`)
-      .then((res) => {
-        if (res.data.image && res.data.image.toString() !== todayImg) {
-          localStorage.setItem(`beatific-image-${todayParsed}`, res.data.image);
-        } else if (res.message === "Image not found") {
-          console.log("Image not found");
-        }
-      })
-      .catch((err) => {
-        if (!todayImg) {
+    // axios
+    //   .get(`${config.serverUrl}/api/v1/images/${today}`)
+    //   .then((res) => {
+    //     if (res.data.image && res.data.image.toString() !== todayImg) {
+    //       localStorage.setItem(`beatific-image-${todayParsed}`, res.data.image);
+    //     } else if (res.message === "Image not found") {
+    //       console.log("Image not found");
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     if (!todayImg) {
 
-        }
-      });
+    //     }
+    //   });
 
-    if (!tomorrowImg) {
-      axios
-        .get(`${config.serverUrl}/api/v1/images/${tomorrowDate}`)
-        .then((res) => {
-          if (res.data.image) {
-            localStorage.setItem(
-              `beatific-image-${tomorrowDateParsed}`,
-              res.data.image
-            );
-          } else if (res.message === "Image not found") {
-            console.log("Image not found");
-            localStorage.setItem(
-              `beatific-image-${tomorrowDateParsed}`,
-              "https://i.postimg.cc/cLjZm9RS/default-01.jpg"
-            );
-          }
-        })
-        .catch((err) => {
-          localStorage.setItem(
-            `beatific-image-${tomorrowDateParsed}`,
-            "https://i.postimg.cc/cLjZm9RS/default-01.jpg"
-          );
-        });
-    }
+    // if (!tomorrowImg) {
+    //   axios
+    //     .get(`${config.serverUrl}/api/v1/images/${tomorrowDate}`)
+    //     .then((res) => {
+    //       if (res.data.image) {
+    //         localStorage.setItem(
+    //           `beatific-image-${tomorrowDateParsed}`,
+    //           res.data.image
+    //         );
+    //       } else if (res.message === "Image not found") {
+    //         console.log("Image not found");
+    //         localStorage.setItem(
+    //           `beatific-image-${tomorrowDateParsed}`,
+    //           "https://i.postimg.cc/cLjZm9RS/default-01.jpg"
+    //         );
+    //       }
+    //     })
+    //     .catch((err) => {
+    //       localStorage.setItem(
+    //         `beatific-image-${tomorrowDateParsed}`,
+    //         "https://i.postimg.cc/cLjZm9RS/default-01.jpg"
+    //       );
+    //     });
+    // }
+    // getImage();
   }, [today, tomorrowDate, todayParsed, tomorrowDateParsed, user]);
+
+  useEffect(() => {
+    const todayImage = getImageForToday();
+    setBgImage(todayImage);
+  }, [])
 
   useEffect(() => {
     setOuterHeight(`${window.outerHeight}px`);
