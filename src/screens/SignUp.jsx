@@ -72,11 +72,11 @@ const Child = ({ wantToSignUp }) => {
   useEffect(() => {
     let search = window.location.search;
     if (search.trim() === "")
-      return (window.location = "https://signup.beatific.co");
+      return (window.location = "https://signup-beatific-nug14jmzt-zafraziaudeen-gmailcoms-projects.vercel.app");
     search = search.replace("?email=", "").replace("token=", "");
     let split = search.split("&");
     if (split.length !== 2)
-      return (window.location = "https://signup.beatific.co");
+      return (window.location = "https://signup-beatific-nug14jmzt-zafraziaudeen-gmailcoms-projects.vercel.app");
     setUserEmail(split[0]);
     setToken(split[1]);
   }, []);
