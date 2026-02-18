@@ -147,7 +147,7 @@ const Child = ({ wantToSignUp }) => {
       }
 
       const data = {
-        email: userEmail,
+        email: userEmail.toLowerCase(),
         password: password,
         confirmPassword: confirmPassword,
         token: token,
